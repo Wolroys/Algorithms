@@ -47,7 +47,7 @@ public class Graph {
     }
 
     public void displayVertex(int v){
-        System.out.println(vertexList[v].label);
+        System.out.print(vertexList[v].label);
     }
 
     public void dfs(){
@@ -68,9 +68,32 @@ public class Graph {
             }
         }
 
-        for (int i = 0; i < nVerts; i++){
-            vertexList[i].isVisited = false;
+        free();
+    }
+
+    public void mst(){
+        vertexList[0].isVisited = true;
+        stack.push(0);
+
+        while (!stack.isEmpty()){
+            int currentVertex = stack.peek();
+
+            int v = getAdjUnvisitedVertex(currentVertex);
+
+            if (v == -1)
+                stack.pop();
+            else{
+
+                vertexList[v].isVisited = true;
+                stack.push(v);
+
+                displayVertex(currentVertex);
+                displayVertex(v);
+                System.out.print(" ");
+            }
         }
+
+        free();
     }
 
     public void bfs(){
@@ -89,6 +112,11 @@ public class Graph {
             }
         }
 
+        free();
+
+    }
+
+    public void free(){
         for (int i = 0; i < nVerts; i++){
             vertexList[i].isVisited = false;
         }
@@ -113,12 +141,18 @@ class Main{
         theGraph.addVertex('C');
         theGraph.addVertex('D');
         theGraph.addVertex('E');
+
         theGraph.addEdge(0, 1);
-        theGraph.addEdge(1, 2);
+        theGraph.addEdge(0, 2);
         theGraph.addEdge(0, 3);
+        theGraph.addEdge(0, 4);
+        theGraph.addEdge(1, 2);
+        theGraph.addEdge(1, 3);
+        theGraph.addEdge(1, 4);
+        theGraph.addEdge(2, 3);
+        theGraph.addEdge(2, 4);
         theGraph.addEdge(3, 4);
-        System.out.print("Visits: ");
-        theGraph.bfs();
-        System.out.println();
+
+        theGraph.mst();
     }
 }
